@@ -1,5 +1,6 @@
 """Support for Plejd events."""
 from datetime import timedelta
+import logging
 
 from homeassistant.components.event import EventEntity, EventDeviceClass
 from homeassistant.config_entries import ConfigEntry
@@ -12,6 +13,7 @@ from .plejd_entity import PlejdDeviceBaseEntity
 
 SCENE_ACTIVATION_RATE_LIMIT = timedelta(seconds=2)
 
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback
@@ -63,6 +65,7 @@ class PlejdSceneEvent(EventEntity):
     @callback
     def _handle_scene_activated(self) -> None:
         """When scene is activated from Plejd."""
+        _LOGGER.info('Scene activated %s', self.device.title)
         self._trigger_event("activated")
         self.async_write_ha_state()
 
@@ -104,6 +107,7 @@ class PlejdButtonEvent(PlejdDeviceBaseEntity, EventEntity):
     def _handle_button_press(self, event) -> None:
         """When a button is pushed from Plejd."""
         if event["button"] == self.button_id:
+            _LOGGER.info('Button pressed %s', self.device.name)
             self._trigger_event("press")
             self.async_write_ha_state()
 

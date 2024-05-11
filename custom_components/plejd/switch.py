@@ -1,4 +1,5 @@
 """Support for Plejd switches."""
+import logging
 
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.config_entries import ConfigEntry
@@ -8,6 +9,7 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from .plejd_site import  PlejdDevice, get_plejd_site_from_config_entry, OUTPUT_TYPE
 from .plejd_entity import PlejdDeviceBaseEntity
 
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback
@@ -43,10 +45,12 @@ class PlejdSwitch(PlejdDeviceBaseEntity, SwitchEntity):
 
     async def async_turn_on(self, **_) -> None:
         """Turn the switch on."""
+        _LOGGER.info('Turning on switch %s', self.device.name)
         await self.device.turn_on(None)
         pass
 
     async def async_turn_off(self, **_) -> None:
         """Turn the switch off."""
+        _LOGGER.info('Turning off switch %s', self.device.name)
         await self.device.turn_off()
         pass

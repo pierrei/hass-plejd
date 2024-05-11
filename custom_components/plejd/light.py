@@ -1,5 +1,7 @@
 """Support for Plejd lights."""
 
+import logging
+
 from homeassistant.components.light import LightEntity, ColorMode
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import callback, HomeAssistant
@@ -7,6 +9,8 @@ from homeassistant.helpers.entity_platform import AddEntitiesCallback
 
 from .plejd_site import PlejdDevice, get_plejd_site_from_config_entry, OUTPUT_TYPE
 from .plejd_entity import PlejdDeviceBaseEntity
+
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(
     hass: HomeAssistant, config_entry: ConfigEntry, async_add_entities: AddEntitiesCallback
@@ -71,8 +75,10 @@ class PlejdLight(PlejdDeviceBaseEntity, LightEntity):
 
     async def async_turn_on(self, brightness: int|None = None, color_temp: int|None = None, **_) -> None:
         """Turn the light on."""
+        _LOGGER.info('Turning on light %s', self.device.name)
         await self.device.turn_on(brightness, color_temp)
 
     async def async_turn_off(self, **_) -> None:
         """Turn the light off."""
+        _LOGGER.info('Turning off light %s', self.device.name)
         await self.device.turn_off()

@@ -1,8 +1,12 @@
+import logging
+
 from homeassistant.components.scene import Scene
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import callback, HomeAssistant
 
 from .plejd_site import PlejdScene, get_plejd_site_from_config_entry, OUTPUT_TYPE
+
+_LOGGER = logging.getLogger(__name__)
 
 
 async def async_setup_entry(
@@ -41,4 +45,5 @@ class PlejdSceneEntity(Scene):
 
     async def async_activate(self, **_) -> None:
         """Activate the scene"""
+        _LOGGER.info('Activating scene %s', self.scene.title)
         await self.scene.activate()

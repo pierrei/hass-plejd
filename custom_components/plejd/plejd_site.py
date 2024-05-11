@@ -75,6 +75,8 @@ class PlejdSite:
 
     async def start(self) -> None:
         """Setup and connect to plejd site."""
+        _LOGGER.info("Start")
+
         if not(site_data_cache := await self.store.async_load()) or not isinstance(site_data_cache, dict):
             site_data_cache = {}
 
@@ -142,6 +144,8 @@ class PlejdSite:
 
     async def stop(self, *_) -> None:
         """Disconnect mesh and tear down site configuration."""
+        _LOGGER.info("Stop")
+
         self.stopping = True
 
         if not(site_data_cache := await self.store.async_load()) or not isinstance(site_data_cache, dict):
@@ -160,6 +164,7 @@ class PlejdSite:
 
     async def _ping(self, *_) -> None:
         """Ping the plejd mesh to connect or maintain the connection."""
+        _LOGGER.info("Ping")
         if self.stopping:
             return
         if not await self.manager.ping():
@@ -167,6 +172,7 @@ class PlejdSite:
 
     async def _broadcast_time(self, *_) -> None:
         """Check that the mesh clock is in sync."""
+        _LOGGER.info("Broadcast time")
         if self.stopping:
             return
         await self.manager.broadcast_time()
