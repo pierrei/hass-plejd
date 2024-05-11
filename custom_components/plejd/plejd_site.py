@@ -75,7 +75,7 @@ class PlejdSite:
 
     async def start(self) -> None:
         """Setup and connect to plejd site."""
-        _LOGGER.info("Start")
+        _LOGGER.info('Start')
 
         if not(site_data_cache := await self.store.async_load()) or not isinstance(site_data_cache, dict):
             site_data_cache = {}
@@ -126,7 +126,7 @@ class PlejdSite:
                 self._discovered(service_info, connect=False)
 
         # Ping the mesh periodically to maintain the connection
-        _LOGGER.info("Setting up async ping")
+        _LOGGER.info('Setting up async ping')
         self.config_entry.async_on_unload(
             async_track_time_interval(
                 self.hass, self._ping, timedelta(minutes=10), name="Plejd keep-alive"
@@ -140,7 +140,7 @@ class PlejdSite:
             )
         )
 
-        _LOGGER.info("Creating task for ping")
+        _LOGGER.info('Creating task for ping')
         self.hass.async_create_task(self._ping())
         self.hass.async_create_task(self._broadcast_time())
 
@@ -160,8 +160,10 @@ class PlejdSite:
 
     def _discovered(self, service_info: BluetoothServiceInfoBleak, *_, connect: bool = True) -> None:
         """Register any discovered plejd device with the manager."""
+        _LOGGER.info('Discovered device %s', service_info.device.name)
         self.manager.add_mesh_device(service_info.device, service_info.rssi)
         if connect:
+            _LOGGER.info('Discovered device, creating ping task')
             self.hass.async_create_task(self._ping())
 
     async def _ping(self, *_) -> None:
