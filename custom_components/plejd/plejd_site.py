@@ -126,6 +126,7 @@ class PlejdSite:
                 self._discovered(service_info, connect=False)
 
         # Ping the mesh periodically to maintain the connection
+        _LOGGER.info("Setting up async ping")
         self.config_entry.async_on_unload(
             async_track_time_interval(
                 self.hass, self._ping, self.manager.ping_interval, name="Plejd keep-alive"
@@ -139,6 +140,7 @@ class PlejdSite:
             )
         )
 
+        _LOGGER.info("Creating task for ping")
         self.hass.async_create_task(self._ping())
         self.hass.async_create_task(self._broadcast_time())
 
