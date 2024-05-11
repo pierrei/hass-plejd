@@ -162,9 +162,9 @@ class PlejdSite:
         """Register any discovered plejd device with the manager."""
         _LOGGER.info('Discovered device %s', service_info.device.name)
         self.manager.add_mesh_device(service_info.device, service_info.rssi)
-        if connect:
-            _LOGGER.info('Discovered device, creating ping task')
-            self.hass.async_create_task(self._ping())
+        #if connect:
+        #    _LOGGER.info('Discovered device, creating ping task')
+        #    self.hass.async_create_task(self._ping())
 
     async def _ping(self, *_) -> None:
         """Ping the plejd mesh to connect or maintain the connection."""
