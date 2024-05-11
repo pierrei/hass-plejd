@@ -129,7 +129,7 @@ class PlejdSite:
         _LOGGER.info("Setting up async ping")
         self.config_entry.async_on_unload(
             async_track_time_interval(
-                self.hass, self._ping, self.manager.ping_interval, name="Plejd keep-alive"
+                self.hass, self._ping, timedelta(minutes=10), name="Plejd keep-alive"
             )
         )
 
