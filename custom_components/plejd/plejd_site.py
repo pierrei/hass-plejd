@@ -108,12 +108,14 @@ class PlejdSite:
             if ble_device:
                 await self.manager.close_stale(ble_device)
 
+        _LOGGER.info(f'Registing callback for service UUID {pyplejd.PLEJD_SERVICE.lower()}')
+
         # Register callback for bluetooth discover
         self.config_entry.async_on_unload(
             bluetooth.async_register_callback(
                 self.hass,
                 self._discovered,
-                {'connectable': True, 'service_uuid' :pyplejd.PLEJD_SERVICE.lower()},
+                {'connectable': True, 'service_uuid': pyplejd.PLEJD_SERVICE.lower()},
                 bluetooth.BluetoothScanningMode.PASSIVE,
             )
         )
