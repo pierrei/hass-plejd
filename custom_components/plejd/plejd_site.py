@@ -113,9 +113,7 @@ class PlejdSite:
             bluetooth.async_register_callback(
                 self.hass,
                 self._discovered,
-                bluetooth.match.BluetoothCallbackMatcher(
-                    connectable = True, service_uuid=pyplejd.PLEJD_SERVICE.lower()
-                ),
+                {'connectable': True, 'service_uuid' :pyplejd.PLEJD_SERVICE.lower()},
                 bluetooth.BluetoothScanningMode.PASSIVE,
             )
         )
